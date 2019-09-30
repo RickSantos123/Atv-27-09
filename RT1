@@ -1,0 +1,41 @@
+Enable
+configure terminal
+hostname RT-01
+banner motd "ACESSO APENAS PARA PESSOAS AUTORIZADAS"
+enable secret SenhadaEnable
+line console 0
+password SenhadaConsole
+login 
+exit
+username rick privilege 15 secret senharick
+line vty 0 15 
+transport input ssh
+exec-timeout 5
+login local 
+exit
+service password-encryption
+interface gigabitEthernet 0/1
+ip address 172.16.0.1 255.255.254.0
+description Interface rede 1
+no shutdown
+exit
+interface serial 0/0/0
+ip address 200.19.189.5 255.255.255.252
+description Interface S0/0/0
+no shutdown
+exit
+interface serial 0/0/1
+ip address 200.19.189.2 255.255.255.252
+description Interface S0/0/1
+no shutdown
+exit
+login block-for 240 attempts 7 within 600
+ip domain-name rede1.local
+security passwords min-length 8
+ip route 172.16.2.0 255.255.254.0 200.18.189.1
+ip route 172.16.2.0 255.255.254.0 200.18.189.6
+ip route 200.18.189.8 255.255.255.252 200.18.189.1
+ip route 200.18.189.8 255.255.255.252 200.18.189.6
+ip route 172.16.4.0 255.255.255.254 200.18.189.6
+ip route 172.16.4.0 255.255.255.254 200.18.189.1
+do wr
